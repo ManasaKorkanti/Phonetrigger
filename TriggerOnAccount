@@ -1,0 +1,39 @@
+trigger TriggerOnAccount on Account (after insert, after update) {
+    List<Account> accountList = new List<Account>();
+    
+    try {
+        // Query all Account records from Trigger.new
+        accountList = [SELECT Id, Phone, PersonHomePhone, PersonOtherPhone, PersonMobilePhone, IsPersonAccount 
+                       FROM Account 
+                       WHERE Id IN :Trigger.new];
+        
+        // Check if there are any records and if it's the first time executing the trigger
+        if (!accountList.isEmpty() && AccPhNoFormatter.isFirstTime) {
+            AccPhNoFormatter.isFirstTime = false;
+            
+            // Separate standard accounts and person accounts
+            List<Account> standardAccounts = new List<Account>();
+            List<Account> personAccounts = new List<Account>();
+            for (Account acc : accountList) {
+                if (acc.IsPersonAccount) {
+                    personAccounts.add(acc);
+                } else {
+                    standardAccounts.add(acc);
+                }
+            }
+            
+            // Validate phone numbers for standard accounts
+            if (!standardAccounts.isEmpty()) {
+                AccPhNoFormatter.accountPhoneValidation(standardAccounts);
+            }
+            
+            // Validate phone numbers for person accounts
+            if (!personAccounts.isEmpty()) {
+                AccPhNoFormatter.accountPhoneValidation(personAccounts);
+            }
+        }
+    }
+    catch (Exception e) {
+        System.debug(e.getMessage());
+    }
+}
