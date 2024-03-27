@@ -23,10 +23,10 @@ public class ContactPhNoFormatter {
                 }
                 // Homephone validation ends here
                 // Work Phone validation starts here
-                if(c.npe01__WorkPhone__c != null){
+                /*if(c.npe01__WorkPhone__c != null){
                     c.npe01__WorkPhone__c=PhoneNoUtilities.formatNumber(c.npe01__WorkPhone__c);
                     change=true;
-                }
+                }*/
                 // Work Phone validation ends here
                 // Other Phone validation starts here
                 if(c.OtherPhone != null){
@@ -46,3 +46,4 @@ public class ContactPhNoFormatter {
         }
     }
 }
+    
