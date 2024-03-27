@@ -1,0 +1,29 @@
+@isTest
+public class TestAccPhNoFormatter {
+    @isTest
+  private static void testInsertAccount() {
+    List<Account> cont = new List<Account>();
+    Account c1= new Account ( NAME='Account ABC', Phone='(61)245783214.');
+    cont.add(c1);
+    Account c2 = new Account (LASTNAME='Peter', Phone='61-490-490-479.',PersonMobilePhone='0478879913',PersonHomePhone='0323444444',PersonOtherPhone='234567893');
+    cont.add(c2);
+    Account c3 = new Account (LASTNAME='Parker', Phone='61-1300907987',PersonMobilePhone='1800234512',PersonHomePhone='61 425566772',PersonOtherPhone='08 0812343456');
+    cont.add(c3);
+    Insert cont;
+    Account A3= [SELECT NAME, Phone,PersonMobilePhone,PersonHomePhone,PersonOtherPhone FROM Account where Id=:c1.Id];
+    Account A4= [SELECT LASTNAME, Phone,PersonMobilePhone,PersonHomePhone,PersonOtherPhone FROM Account where Id=:c2.Id];
+    Account A5= [SELECT LASTNAME, Phone,PersonMobilePhone,PersonHomePhone,PersonOtherPhone FROM Account where Id=:c3.Id];
+    System.assertEquals('+61 2 4578 3214',A3.phone);
+    //System.assertEquals('+61 478 879 912',A3.PersonMobilePhone);
+      //System.assertEquals('+61 2 1212 3412',A3.PersonHomePhone);
+    //System.assertEquals('+61 456 678 829',A3.PersonOtherPhone);
+       System.assertEquals('+61 490 490 479',A4.phone);
+    System.assertEquals('+61 478 879 913',A4.PersonMobilePhone);
+       System.assertEquals('+61 3 2344 4444',A4.PersonHomePhone);
+    System.assertEquals('+61 2 3456 7893',A4.PersonOtherPhone);
+       System.assertEquals('1300 907 987',A5.phone);
+       System.assertEquals('1800 234 512',A5.PersonMobilePhone);
+    System.assertEquals('+61 425 566 772',A5.PersonHomePhone);
+       System.assertEquals('+61 8 1234 3456',A5.PersonOtherPhone);
+  }
+}
